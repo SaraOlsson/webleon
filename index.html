@@ -67,13 +67,13 @@
 
 
       </nav>
-      <section class="home-section home-full-height" id="home" data-background="assets/images/section-5.jpg">
+      <section  id="home" >
         <!-- <div class="video-player" data-property="{videoURL:'https://www.youtube.com/watch?v=bNucJgetMjE', containment:'.home-section', startAt:18, mute:false, autoPlay:true, loop:true, opacity:1, showControls:false, showYTLogo:false, vol:25}"></div> -->
         <video autoplay muted loop id="myVideo">
         <source src="assets/images/leon_goes_camou.mp4" type="video/mp4">
       </video>
 
-       <!--
+       <!-- class="home-section home-full-height" data-background="assets/images/section-5.jpg"
         <div class="video-controls-box">
           <div class="container">
             <div class="video-controls"><a class="fa fa-volume-up" id="video-volume" href="#">&nbsp;</a><a class="fa fa-pause" id="video-play" href="#">&nbsp;</a></div>
@@ -87,67 +87,12 @@
         </div> -->
       </section>
       <div class="main">
-        <!--
-        <section class="module" id="alt-features">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-6 col-sm-offset-3">
-                <h2 class="module-title font-alt">Our features</h2>
-                <div class="module-subtitle font-serif">A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-sm-6 col-md-3 col-lg-3">
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-strategy"></span></div>
-                  <h3 class="alt-features-title font-alt">Branding</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-tools-2"></span></div>
-                  <h3 class="alt-features-title font-alt">Development</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-target"></span></div>
-                  <h3 class="alt-features-title font-alt">Marketing</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-tools"></span></div>
-                  <h3 class="alt-features-title font-alt">Design</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-              </div>
-              <div class="col-md-6 col-lg-6 hidden-xs hidden-sm">
-                <div class="alt-services-image align-center"><img src="assets/images/promo.png" alt="Feature Image"></div>
-              </div>
-              <div class="col-sm-6 col-md-3 col-lg-3">
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-camera"></span></div>
-                  <h3 class="alt-features-title font-alt">Photography</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-mobile"></span></div>
-                  <h3 class="alt-features-title font-alt">Mobile</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-linegraph"></span></div>
-                  <h3 class="alt-features-title font-alt">Music</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-                <div class="alt-features-item">
-                  <div class="alt-features-icon"><span class="icon-basket"></span></div>
-                  <h3 class="alt-features-title font-alt">Shop</h3>A wonderful serenity has taken possession of my entire soul like these sweet mornings.
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-<div class="module-subtitle font-serif">Lala.</div>
-      -->
 
         <section class="module" id="intro">
          <div class="container mycontainer">
            <h2 class="module-title font-alt">Hey</h2>
            <div class="module-subtitle font-serif">
-             This page serves the purpose of demonstrating my course project in the class 'methods for procedural images'. Enjoy :)
+             This page serves the purpose of presenting  my course project in the class 'methods for procedural images' -- Enjoy :)
            </div>
 
            <!-- <p class="myfont">This page serves the purpose of demonstrating my course project, regarding methods for procedural images. Enjoy!</p> -->
@@ -169,15 +114,16 @@
             which opens up for the possibility to play around with different noise functions.
 
           </p>
-          <p> Used: Unity + HLSL shader code. </p>
+
 
           <h5 class="font-alt">Aim</h5>
           <p>
 
-            The purpose of this project is to achieve a procedural texture which colors depends on the surrounding. A control panel should be be
+            The purpose of this project is to achieve a procedural texture which colors depend on the surrounding. A control panel should be be
             available to the end user, for creative adjustments regarding parameters such as cell size, color variations and amount of procedural bump mapping.
 
          </p>
+         <p> To be used: Unity + HLSL shader code. </p>
 
          <h3 class="font-alt mt-40 mb-0">Theory</h3>
          <hr class="divider-w mt-10 mb-20">
@@ -192,20 +138,70 @@
 
         </p>
 
-        <h5 class="font-alt">Procedural UV-mapp imitation </h5>
+        <h5 class="font-alt">UV-maps </h5>
         <p>
 
-          What has been done here?!
+          A UV map can be interpreted as the 3D model stretched out into a flat 2D image,
+          a procedure often referred as UV-unwrap. Each face in the polygon then has a
+          corresponding face on the UV map and thus it's possible to attach attributes
+          for different parts of the mesh easily. A common use of the UV map is to place 2D textures
+          according to the flattened faces, while another is to mark areas with values
+          representing other characteristics. As for example, these characteristics could
+          correspond to the length, thickness or bend direction of fur.  Also, a few integer
+          values can be used to label areas as “leg”, “tshirt”, or “hair”, to then attach
+          separate surface attributes in the shader based on the label. Especially this last
+          example would be useful in the creation of a procedural texture. when the object
+          has distinct variations in different areas.
+
+
 
        </p>
        <h5 class="font-alt">Noise </h5>
        <p>
 
-        Noise in 3D comes with some pros and cons. Unlike the 2D version, there are no visible seams due to UV mapping which is good.
-        One notable downside though is the that while the noise is a volume, the surface we see is actually just a cross section.
-        That is, the points we would define as the center points in a cell pattern are (most usually) not actually the correct center points
+         Gradient noise is a technique used to produce natural structures in computer
+         graphics, in particular to obey for the irregularity in the majority of all natural objects
+         - things are simply not flat and exact. Grass grows in tufts, dust covers surfaces and
+         kitchen clinker has details of imperfections. The list of examples can continue infinitely.
+         A fragment shader processes each fragment individually and with the same code, yet the
+         desired output should be continuous and coherent in its entirety. Gradient noise has proven
+         its ability to meet these needs.
+         The first known implementation of a gradient noise function is Perlin noise, which since
+         then has increased the appearance of realism in computer graphics. Along with the
+         classic Perlin noise, further developments has led to similar implementations as Simplex noise,
+         Worley noise (Cellular Noise), and Voronoi noise. Common for all these implementations is
+         the necessity that the positions used in the fragment shader are transformed to local coordinate
+         space, as the chameleon is suppose to move.
 
-        As the chameleon is suppose to move, it is critical that the positions used in the fragment shader are transformed to local coordinate space.
+       </p>
+       <b>
+
+        Classic Perlin noise
+
+      </b>
+      <p>
+
+        The main idea of Perlin noise is to first generate regularly spaced points in space,
+        each with function value zero and with a pseudo-random gradient assigned. Then, a
+        continuous function is retrieved with an interpolation between the points given the
+        gradients. Similarly for noise in higher dimensions, the points are regularly spaced
+        in each direction for the  dimension in question and interpolation is computed between
+        the closest points. As the gradients are pseudo-random, the same result will be achieved
+        every time the program runs with the same parameters which is often highly desired.
+
+      </p>
+      <b>
+
+        Cellular Noise
+
+      </b>
+      <p>
+
+        Cellular Noise is based on distance fields, the distance to the closest one of a set of
+        feature points. Let's say we want to make a distance field of 4 points. What do we need
+        to do? Well, for each pixel we want to calculate the distance to the closest point.
+        That means that we need to iterate through all the points, compute their distances to
+        the current pixel and store the value for the one that is closest.
 
       </p>
 
