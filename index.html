@@ -125,10 +125,19 @@
          </p>
          <p> To be used: Unity + HLSL shader code. </p>
 
+         <h5 class="font-alt">Limitations</h5>
+         <p>
+
+           This project covers an alternative for UV mapping. While an UV map can be generated
+           automatically it often need manual justifications and will add a substantial complexity
+           to this solution, it will not be discussed.
+
+        </p>
+
          <h3 class="font-alt mt-40 mb-0">Theory</h3>
          <hr class="divider-w mt-10 mb-20">
 
-         <h5 class="font-alt">Characteristics of chameleons </h5>
+         <h5 class="font-alt">Characteristics of chameleons</h5>
          <p>
 
            First, because animals are cool, let us quickly cover some main characteristics of the chameleon skin which are to be imitated.
@@ -138,7 +147,7 @@
 
         </p>
 
-        <h5 class="font-alt">UV-maps </h5>
+        <h5 class="font-alt">UV-maps</h5>
         <p>
 
           A UV map can be interpreted as the 3D model stretched out into a flat 2D image,
@@ -197,23 +206,214 @@
       </b>
       <p>
 
-        Cellular Noise is based on distance fields, the distance to the closest one of a set of
-        feature points. Let's say we want to make a distance field of 4 points. What do we need
-        to do? Well, for each pixel we want to calculate the distance to the closest point.
-        That means that we need to iterate through all the points, compute their distances to
-        the current pixel and store the value for the one that is closest.
+        Lala
 
       </p>
+      <b>
+
+        2D noise versus 3D noise
+
+      </b>
+      <p>
+
+        2D noise may seem convenient to use for a surface texture, as the common method to
+        give a 3D object its appearance is to map a 2D texture to it. One advantage is that
+        information retrieved by the noise function, as the vector to the closest point, will
+        actually refer to a point on the surface. However, a UV-map would be needed to map the
+        3D coordinates of the mesh to the corresponding texture pixel. Without the UV-map, there
+        is no suited input to the 2D noise function.
+
+        Noise in 3D comes with some pros and cons as well. Unlike the 2D version, there are no
+        visible seams due to UV mapping which is good. One notable downside though is the that
+        while the noise is a volume, the surface we see is actually just a cross section. That
+        is, the points we would define as the center points in a cell pattern are (most usually)
+        not actually the actual center points. While the surface is not explicitly defined,
+        approximations can be obtained with the use of linear algebra.
+
+      </p>
+
+      <div class="row multi-columns-row mb-70">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <div class="content-box">
+            <div class="content-box-image"><img class="imgmaxsize" src="assets/images/leon/dots_center_small.jpg" alt="Title 1"/></div>
+            <h3 class="content-box-title font-serif">Title 1</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <div class="content-box">
+            <div class="content-box-image"><img class="imgmaxsize" src="assets/images/leon/dots_ort_small.jpg" alt="Title 2"/></div>
+            <h3 class="content-box-title font-serif">Title 2</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
+          </div>
+        </div>
+      </div>
+
 
       <h3 class="font-alt mt-40 mb-0">Method</h3>
       <hr class="divider-w mt-10 mb-20">
 
+      <p>
+        The project includes creating a procedural cell pattern,
+        using bump mapping for the illusion of three-dimensional cells,
+        and generating colors to camouflage the object to its surroundings.
+      </p>
+
+
       <h5 class="font-alt">Procedural pattern</h5>
       <p>
 
-       fine details
+        The main cell pattern is created with Voronoi noise. Fine details are
+        achieved with a combination of the main cell pattern and another pattern
+        created with the very same method except for a smaller value on the scale parameter.
+        Adjustable parameters was introduced for cell size ( noise scale )
+        and level of uniformness, i.e. scale of random displacement of the feature points.
+
+        The shader has two different modes depending on whether the camouflage
+        the effect is on or off. A set of colors is to be set by the user to
+        reflect the default appearance of the chameleon. Below are these colors
+        labeled, along with a description of how this value is overridden in camouflage mode. </br> </br>
+
+        - base color, <i> overridden by the average value of the current render texture. </i></br>
+        - main cell color, <i> overridden with values from the render texture - sampled with noise values. </i></br>
+        - two normal dependent colors ( like top and bottom colors ), <i>overridden by.. </i></br>
+        - color spots, <i>overridden by.. </i></br>
 
      </p>
+
+     <div class="row multi-columns-row mb-70">
+       <div class="col-sm-6 col-md-6 col-lg-6">
+         <div class="content-box">
+           <div class="content-box-image"><img class="imgmaxheight" src="assets/images/leon/pinkleon_n_small.jpg" alt="Title 1"/></div>
+           <h3 class="content-box-title font-serif">Title 1</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
+         </div>
+       </div>
+       <div class="col-sm-6 col-md-6 col-lg-6">
+         <div class="content-box">
+           <div class="content-box-image"><img class="imgmaxheight" src="assets/images/leon/pinkleon_c_small.jpg" alt="Title 2"/></div>
+           <h3 class="content-box-title font-serif">Title 2</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
+         </div>
+       </div>
+     </div>
+
+     <h5 class="font-alt">Procedural UV-map imitation</h5>
+     <p>
+
+      It is all about to take advantage of the little information available
+      in the fragment shader and the limited input parameters.
+
+    </p>
+
+    <h5 class="font-alt">Procedurell Bump Mapping</h5>
+    <p>
+
+      To create the illusion of three-dimensional cells in the skin,
+      procedural bump mapping is used. As the Voronoi noise function
+      returns a vector to the nearest feature point, it can be used to
+      modify the normal. When the light calculation is then performed for
+      this normal, the illusion is created that the surface is directed in
+      a different direction than is actually the case and shadows and
+      highlights are created.
+
+   </p>
+
+   <div class="row multi-columns-row mb-70">
+     <div class="col-sm-6 col-md-6 col-lg-6">
+       <div class="content-box">
+         <div class="content-box-image"><img class="imgmaxheight" src="assets/images/leon/bump_s.jpg" alt="Title 1"/></div>
+         <h3 class="content-box-title font-serif">Title 1</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
+       </div>
+     </div>
+     <div class="col-sm-6 col-md-6 col-lg-6">
+       <div class="content-box">
+         <div class="content-box-image"><img class="imgmaxheight" src="assets/images/leon/bump_n.jpg" alt="Title 2"/></div>
+         <h3 class="content-box-title font-serif">Title 2</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
+       </div>
+     </div>
+   </div>
+
+   <h5 class="font-alt">Camouflage effect</h5>
+   <p>
+     The targeted appearance had the following ambitions: </br>
+    - the colors of the animal should not change with camera orbiting </br>
+    - surrounding objects should not be obviously recognized in the skin like
+     a mirror surface, rather their colors should be represented in a more abstract way.
+   </p>
+
+  <b>
+
+    First approach:
+
+  </b>
+  <p>
+
+    As a first approach, the reflection in the normal direction was used to reflect
+    the colors of the surroundings in the chameleon's skin. The idea was that each
+    cell would get the color sampled by the center point, i.e. the position used to
+    retrieve the reflection color is the center point of the cell. During tests of
+    this approach, the following difficulties were discovered: finding this exact
+    point in the surface when the noise function is in 3D, and the fact that also
+    the normal of the center point can not be reached from the fragment shader.
+    However, after some consideration it also got clear and that the colors of the
+    reflection would not actually represent the near environment very well, for example,
+    the top of the animal would always get the color of the sky.
+
+  </p>
+
+  <b>
+
+    Final approach:
+
+  </b>
+  <p>
+
+    Later on the approach was instead to make use of a camera.
+    The chameleon has a camera that follows its position, located above.
+    This camera ignores the chameleon and renders everything else to a
+    render texture. This texture is then used as input to the shader and
+    can be sampled as a texture2d.
+
+  </p>
+
+  <h5 class="font-alt">Test environment</h5>
+  <p>
+
+    To test the camouflage effect, a scene was created in Unity with a number
+    of colorful areas. The user can control the chameleon to move and then
+    activate the camouflage at the desired location. 3D models for the chameleon
+    and most other assets to create an interesting environment are obtained from
+    the Unity Asset Store or other sources under creative commons.
+
+ </p>
+
+ <h3 class="font-alt mt-40 mb-0">Results</h3>
+ <hr class="divider-w mt-10 mb-20">
+
+ <p>
+   Lala
+ </p>
+
+ <div class="row multi-columns-row mb-70">
+   <div class="col-sm-12">
+     <div class="content-box">
+       <div class="content-box-image"><img class="imgmaxheight" src="assets/images/leon/frogimi.jpg" alt="Title 1"/></div>
+       <h3 class="content-box-title font-serif">Frog texture imitation</h3>
+       Test to imitate a traditional UV-mapped texture where the imitation is the one closest to the camera.
+     </div>
+   </div>
+ </div>
+
+ <h5 class="font-alt">Discussion</h5>
+ <p>
+
+   Lala
+
+</p>
+
+<h5 class="font-alt">Further development</h5>
+<p>
+
+  Lala
+
+</p>
 
      <pre class="prettyprint lang-basic">
 
@@ -235,107 +435,8 @@
 
      </p>
 
-     <h4 class="font-alt mt-40 mb-0">Content Box</h4>
-     <hr class="divider-w mt-10 mb-20">
-     <div class="row multi-columns-row mb-70">
-       <div class="col-sm-6 col-md-6 col-lg-6">
-         <div class="content-box">
-           <div class="content-box-image"><img class="imgmaxsize" src="assets/images/leon/dots_center_small.jpg" alt="Title 1"/></div>
-           <h3 class="content-box-title font-serif">Title 1</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
-         </div>
-       </div>
-       <div class="col-sm-6 col-md-6 col-lg-6">
-         <div class="content-box">
-           <div class="content-box-image"><img class="imgmaxsize" src="assets/images/leon/dots_ort_small.jpg" alt="Title 2"/></div>
-           <h3 class="content-box-title font-serif">Title 2</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
-         </div>
-       </div>
-     </div>
-
-     <!-- <p> fascinated too? </p> -->
-
-   </section>
-
-   <section>
-     <div class="container">
-       <div class="row">
-         <div class="col-sm-8 col-sm-offset-2">
-
-           <h4 class="font-alt mt-40 mb-0">Content Box</h4>
-           <hr class="divider-w mt-10 mb-20">
-           <div class="row multi-columns-row mb-70">
-             <div class="col-sm-6 col-md-6 col-lg-6">
-               <div class="content-box">
-                 <div class="content-box-image"><img src="assets/images/leon/dots_center_small.jpg" alt="Title 1"/></div>
-                 <h3 class="content-box-title font-serif">Title 1</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
-               </div>
-             </div>
-             <div class="col-sm-6 col-md-6 col-lg-6">
-               <div class="content-box">
-                 <div class="content-box-image"><img src="assets/images/leon/dots_ort_small.jpg" alt="Title 2"/></div>
-                 <h3 class="content-box-title font-serif">Title 2</h3>Careful attention to detail and clean, well structured code ensures a smooth user experience for all your visitors.
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
-   </section>
-
    </div> <!-- end container -->
 
-
-       <!--   <section class="module" id="news">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-6 col-sm-offset-3">
-                <h2 class="module-title font-alt">Features</h2>
-                <div class="module-subtitle font-serif">Lala.</div>
-              </div>
-            </div>
-            <div class="row multi-columns-row post-columns">
-              <div class="col-sm-6 col-md-4 col-lg-4">
-                <div class="post mb-20">
-                  <div class="post-thumbnail"><a href="#"><img src="assets/images/leon/dots_center_small.jpg" alt="Blog-post Thumbnail"/></a></div>
-                  <div class="post-header font-alt">
-                    <h2 class="post-title"><a href="#">Title</a></h2>
-                    <div class="post-meta">text A
-                    </div>
-                  </div>
-                  <div class="post-entry">
-                    <p>Lala.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-4 col-lg-4">
-                <div class="post mb-20">
-                  <div class="post-thumbnail"><a href="#"><img src="assets/images/leon/dots_ort_small.jpg" alt="Blog-post Thumbnail"/></a></div>
-                  <div class="post-header font-alt">
-                    <h2 class="post-title"><a href="#">Title</a></h2>
-                    <div class="post-meta">text A
-                    </div>
-                  </div>
-                  <div class="post-entry">
-                    <p>Lala.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-4 col-lg-4">
-                <div class="post mb-20">
-                  <div class="post-thumbnail"><a href="#"><img src="assets/images/post-1.jpg" alt="Blog-post Thumbnail"/></a></div>
-                  <div class="post-header font-alt">
-                    <h2 class="post-title"><a href="#">Title</a></h2>
-                    <div class="post-meta">text A
-                    </div>
-                  </div>
-                  <div class="post-entry">
-                    <p>Lala.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section> -->
 
         <section class="module" id="services">
           <div class="container">
